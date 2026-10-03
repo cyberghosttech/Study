@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Send, Bot, User, Sparkles, BookOpen, HelpCircle, FileText, Lightbulb, GraduationCap } from 'lucide-react';
+import { Send, Bot, User, Sparkles, BookOpen, HelpCircle, FileText, Lightbulb, GraduationCap, Camera, Mic } from 'lucide-react';
 import { aiProvider } from '../lib/ai-provider';
 import { getTopicById, getSubjectById, getChapterById } from '../data/mock-data';
 import type { AIMessage, AIContext } from '../types';
@@ -10,8 +10,9 @@ const quickActions = [
   { label: 'Give Example', action: 'give-example', icon: BookOpen },
   { label: 'Quiz Me', action: 'quiz-me', icon: HelpCircle },
   { label: 'Summarize', action: 'summarize', icon: FileText },
-  { label: 'Difficult Terms', action: 'explain-difficult', icon: Sparkles },
-  { label: 'Board Questions', action: 'board-questions', icon: GraduationCap },
+  { label: 'Smart Text', action: 'smart-text', icon: Sparkles },
+  { label: 'Difficult Terms', action: 'explain-difficult', icon: GraduationCap },
+  { label: 'Board Questions', action: 'board-questions', icon: BookOpen },
 ];
 
 export default function AITutorPage() {
@@ -201,14 +202,31 @@ export default function AITutorPage() {
           onSubmit={e => { e.preventDefault(); sendMessage(input); }}
           className="flex items-center gap-2 bg-surface border border-border rounded-xl p-2"
         >
+          <button
+            type="button"
+            onClick={() => sendMessage("I have a problem I need help with. Can you walk me through it step by step?")}
+            className="p-2.5 text-text-muted hover:text-primary hover:bg-border-light rounded-lg transition-colors"
+            aria-label="Scan a problem"
+            title="Scan a problem"
+          >
+            <Camera size={18} />
+          </button>
           <input
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
-            placeholder="Ask anything about this topic..."
+            placeholder="Ask, speak, or scan a problem..."
             className="flex-1 px-3 py-2 text-sm text-text-primary placeholder:text-text-muted bg-transparent focus:outline-none"
             disabled={loading}
           />
+          <button
+            type="button"
+            className="p-2.5 text-text-muted hover:text-primary hover:bg-border-light rounded-lg transition-colors"
+            aria-label="Voice input"
+            title="Voice input"
+          >
+            <Mic size={18} />
+          </button>
           <button
             type="submit"
             disabled={!input.trim() || loading}

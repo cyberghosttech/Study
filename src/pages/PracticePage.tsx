@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Flag, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Flag, CheckCircle, XCircle, Clock, Layers, Zap, Brain, Target, Shuffle } from 'lucide-react';
 import { getQuestionsByTopic, getQuestionsBySubject, getQuestionsByChapter, getSubjectById } from '../data/mock-data';
 import type { Question } from '../types';
 
@@ -174,11 +174,11 @@ export default function PracticePage() {
 // ============================================================
 function PracticeSelect({ topicId, onStart }: { topicId: string | null; onStart: (qs: Question[]) => void }) {
   const practiceModes = [
-    { label: 'MCQs', description: 'Multiple choice questions', icon: '🎯' },
-    { label: 'Short Questions', description: 'Brief answer questions', icon: '✏️' },
-    { label: 'Long Questions', description: 'Detailed answer questions', icon: '📝' },
-    { label: 'Mixed Practice', description: 'All question types', icon: '🔀' },
-    { label: 'Weak Topics', description: 'Focus on areas to improve', icon: '💡' },
+    { label: 'MCQs', description: 'Multiple choice questions', icon: '🎯', action: 'mcq' },
+    { label: 'Short Questions', description: 'Brief answer questions', icon: '✏️', action: 'short' },
+    { label: 'Long Questions', description: 'Detailed answer questions', icon: '📝', action: 'long' },
+    { label: 'Mixed Practice', description: 'All question types', icon: '🔀', action: 'mixed' },
+    { label: 'Weak Topics', description: 'Focus on areas to improve', icon: '💡', action: 'weak' },
   ];
 
   return (
@@ -188,7 +188,7 @@ function PracticeSelect({ topicId, onStart }: { topicId: string | null; onStart:
         <p className="text-text-secondary mt-1">What do you want to practice?</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {practiceModes.map(mode => (
           <button
             key={mode.label}
@@ -205,6 +205,45 @@ function PracticeSelect({ topicId, onStart }: { topicId: string | null; onStart:
             <p className="text-sm text-text-muted mt-1">{mode.description}</p>
           </button>
         ))}
+      </div>
+
+      {/* Special Practice Modes */}
+      <div className="mt-8">
+        <h2 className="text-lg font-semibold text-text-primary mb-4">Special Modes</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Link
+            to="/flashcards"
+            className="bg-surface rounded-xl border border-border p-5 shadow-sm hover:shadow-md hover:border-primary/30 transition-all group"
+          >
+            <Layers size={24} className="text-primary mb-2" />
+            <h3 className="font-semibold text-text-primary group-hover:text-primary transition-colors">Flashcards</h3>
+            <p className="text-xs text-text-muted mt-1">Flip cards to memorize key concepts</p>
+          </Link>
+          <Link
+            to="/true-false"
+            className="bg-surface rounded-xl border border-border p-5 shadow-sm hover:shadow-md hover:border-primary/30 transition-all group"
+          >
+            <Zap size={24} className="text-warning mb-2" />
+            <h3 className="font-semibold text-text-primary group-hover:text-primary transition-colors">True or False</h3>
+            <p className="text-xs text-text-muted mt-1">Quick-fire concept verification</p>
+          </Link>
+          <Link
+            to="/brain-games"
+            className="bg-surface rounded-xl border border-border p-5 shadow-sm hover:shadow-md hover:border-primary/30 transition-all group"
+          >
+            <Brain size={24} className="text-success mb-2" />
+            <h3 className="font-semibold text-text-primary group-hover:text-primary transition-colors">Brain Games</h3>
+            <p className="text-xs text-text-muted mt-1">Fun puzzles for study breaks</p>
+          </Link>
+          <Link
+            to="/mastery"
+            className="bg-surface rounded-xl border border-border p-5 shadow-sm hover:shadow-md hover:border-primary/30 transition-all group"
+          >
+            <Target size={24} className="text-danger mb-2" />
+            <h3 className="font-semibold text-text-primary group-hover:text-primary transition-colors">Mastery Check</h3>
+            <p className="text-xs text-text-muted mt-1">See your topic-level mastery</p>
+          </Link>
+        </div>
       </div>
     </div>
   );

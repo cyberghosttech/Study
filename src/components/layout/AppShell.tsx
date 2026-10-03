@@ -2,18 +2,22 @@ import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
   Home, BookOpen, Brain, FileText, Bot, BarChart3,
-  Calendar, Settings, Menu, X, Search, Bell, ChevronDown,
-  Moon, Sun
+  Calendar, Settings, Menu, X, Search, Bell,
+  Moon, Sun, Layers, Gamepad2, Target, Sparkles
 } from 'lucide-react';
 import { useAppState } from '../../context/AppContext';
 
 const navItems = [
   { label: 'Home', path: '/dashboard', icon: Home },
   { label: 'Subjects', path: '/subjects', icon: BookOpen },
+  { label: 'Flashcards', path: '/flashcards', icon: Layers },
   { label: 'Practice', path: '/practice', icon: Brain },
   { label: 'Exams', path: '/exams', icon: FileText },
+  { label: 'Exam Prep', path: '/exam-prep', icon: Target },
   { label: 'AI Tutor', path: '/ai-tutor', icon: Bot },
+  { label: 'Mastery', path: '/mastery', icon: Sparkles },
   { label: 'Progress', path: '/progress', icon: BarChart3 },
+  { label: 'Brain Games', path: '/brain-games', icon: Gamepad2 },
   { label: 'Planner', path: '/planner', icon: Calendar },
 ];
 
@@ -142,7 +146,7 @@ export function MobileNav() {
   const mobileItems = [
     { label: 'Home', path: '/dashboard', icon: Home },
     { label: 'Study', path: '/subjects', icon: BookOpen },
-    { label: 'Practice', path: '/practice', icon: Brain },
+    { label: 'Practice', path: '/flashcards', icon: Layers },
     { label: 'AI', path: '/ai-tutor', icon: Bot },
     { label: 'Profile', path: '/settings', icon: Settings },
   ];

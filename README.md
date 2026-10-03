@@ -4,17 +4,41 @@ StudyOS is a modern, scalable study platform designed to help students **Learn �
 
 ## Features
 
+### Core Learning
 - **Curriculum-based lessons** with structured chapters and topics
 - **AI-powered tutoring** with contextual awareness
-- **Practice modes**: MCQs, Short Questions, Long Questions, Mixed Practice
+- **Smart Text** — AI-generated topic summaries
+- **Scan & Solve** — Photo-based problem solving (UI ready)
+- **Bookmarks** for important lessons
+
+### Practice & Testing
+- **MCQs** with instant feedback and explanations
+- **Flashcards** with flip animation and mastery tracking
+- **True/False** quick-fire challenges
+- **Short & Long Questions** practice
+- **Mixed Practice** mode
+- **Weak Topics** focus mode
 - **Mock examinations** with timer, navigation, and results analysis
-- **Progress tracking** with subject-wise analytics
+- **Exam Prep** — Set exam date + materials → auto-generated study plan
+
+### Gamification & Motivation
+- **Daily Streaks** — Track consecutive study days
+- **Badges & Achievements** — Unlock milestones
+- **Brain Games** — Logic puzzles, number sequences, quick math
+- **XP System** — Earn points for learning
+
+### Analytics & Progress
+- **Mastery Tracking** — Per-topic mastery with visual rings
+- **Knowledge Gaps** — Identify weak areas with trend indicators
+- **Progress dashboard** with subject-wise analytics
 - **Weak-topic detection** with personalized recommendations
 - **Study planner** for daily/weekly scheduling
-- **Bookmarks** for important lessons
+
+### UX
 - **Search** across all content
 - **Dark mode** support
 - **Fully responsive** design (mobile, tablet, desktop)
+- **Accessibility** — Keyboard navigation, ARIA labels, semantic HTML
 
 ## Technology Stack
 
@@ -69,15 +93,20 @@ src/
 | Path | Description |
 |------|-------------|
 | `/` | Redirects to `/dashboard` |
-| `/dashboard` | Main dashboard with overview |
+| `/dashboard` | Main dashboard with streaks, badges, quick actions |
 | `/subjects` | All subjects listing |
 | `/subjects/:subject` | Subject detail with chapters |
 | `/study/:subject/:chapter/:topic` | Lesson viewer |
-| `/practice` | Practice modes |
+| `/flashcards` | Flashcard decks with flip cards |
+| `/practice` | Practice modes (MCQs, short, long, mixed) |
+| `/true-false` | True/False quick challenges |
 | `/exams` | Mock examinations |
-| `/progress` | Student analytics |
+| `/exam-prep` | Exam prep setup with auto study plan |
+| `/mastery` | Topic-level mastery tracking |
+| `/brain-games` | Brain games for study breaks |
+| `/progress` | Student analytics with badges & streaks |
 | `/planner` | Study planner |
-| `/ai-tutor` | AI tutor interface |
+| `/ai-tutor` | AI tutor with scan & voice input |
 | `/settings` | User settings |
 
 ## Development
@@ -126,16 +155,23 @@ Semantic design tokens are defined in `src/index.css` using Tailwind's `@theme` 
 
 ## Current Implementation Status
 
-### ✅ Completed (Phase A-I)
+### ✅ Completed (Phase A-N)
 - [x] Application shell with responsive navigation
-- [x] Dashboard with progress, recommendations, activity
+- [x] Dashboard with streaks, badges, quick actions, recommendations
 - [x] Subject listing and detail views
 - [x] Lesson viewer with topic navigation
 - [x] Practice interface with MCQ support
+- [x] Flashcards with flip animation and mastery tracking
+- [x] True/False quick challenges
+- [x] Brain Games (number sequences, quick math)
 - [x] Exam mode with timer and results
-- [x] Progress analytics dashboard
+- [x] Exam Prep (set date + materials → auto plan)
+- [x] Mastery tracking with visual rings and trends
+- [x] Knowledge Gaps detection
+- [x] Progress analytics with badges & streaks
 - [x] Study planner
-- [x] AI Tutor UI with mock responses
+- [x] AI Tutor with scan & voice input UI
+- [x] Smart Text AI summaries
 - [x] Settings page
 - [x] Dark mode support
 - [x] Mobile-responsive design

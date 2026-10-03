@@ -199,6 +199,80 @@ export interface AIContext {
   currentLesson?: string;
 }
 
+// Flashcards
+export interface Flashcard {
+  id: string;
+  topicId: string;
+  subjectId: string;
+  front: string;
+  back: string;
+  difficulty: 'easy' | 'medium' | 'hard';
+  lastReviewed?: string;
+  nextReview?: string;
+  timesCorrect: number;
+  timesIncorrect: number;
+}
+
+export interface FlashcardDeck {
+  id: string;
+  name: string;
+  subjectId: string;
+  topicId: string;
+  cards: Flashcard[];
+  masteredCount: number;
+  learningCount: number;
+}
+
+// Gamification
+export interface Streak {
+  currentStreak: number;
+  longestStreak: number;
+  lastStudyDate: string;
+  weeklyActivity: boolean[];
+}
+
+export interface Badge {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  earnedAt?: string;
+  requirement: number;
+  progress: number;
+  category: 'streak' | 'practice' | 'mastery' | 'special';
+}
+
+export interface XPEntry {
+  date: string;
+  xp: number;
+  reason: string;
+}
+
+// Mastery
+export interface TopicMastery {
+  topicId: string;
+  topicName: string;
+  subjectId: string;
+  subjectName: string;
+  mastery: number; // 0-100
+  questionsAttempted: number;
+  correctAnswers: number;
+  lastStudied: string;
+  trend: 'up' | 'down' | 'stable';
+}
+
+// Brain Games
+export interface BrainGame {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  category: 'logic' | 'memory' | 'math' | 'pattern';
+  difficulty: 'easy' | 'medium' | 'hard';
+  highScore?: number;
+  playsToday: number;
+}
+
 // Navigation
 export interface NavItem {
   label: string;

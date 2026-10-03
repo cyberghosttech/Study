@@ -303,3 +303,120 @@ export function getQuestionsByChapter(chapterId: string): Question[] {
 export function getSubjectName(subjectId: string): string {
   return mockSubjects.find(s => s.id === subjectId)?.name ?? 'Unknown';
 }
+
+// ============================================================
+// Flashcards
+// ============================================================
+import type { FlashcardDeck, Flashcard, Streak, Badge, TopicMastery, BrainGame } from '../types';
+
+export const mockFlashcardDecks: FlashcardDeck[] = [
+  {
+    id: 'deck-cs-stacks',
+    name: 'Stacks — Key Concepts',
+    subjectId: 'cs',
+    topicId: 'cs-ch3-t2',
+    masteredCount: 3,
+    learningCount: 3,
+    cards: [
+      { id: 'fc1', topicId: 'cs-ch3-t2', subjectId: 'cs', front: 'What does LIFO stand for?', back: 'Last In, First Out — the principle that the most recently added element is the first to be removed.', difficulty: 'easy', timesCorrect: 5, timesIncorrect: 0 },
+      { id: 'fc2', topicId: 'cs-ch3-t2', subjectId: 'cs', front: 'What operation adds an element to a stack?', back: 'push() — adds an element to the top of the stack.', difficulty: 'easy', timesCorrect: 4, timesIncorrect: 1 },
+      { id: 'fc3', topicId: 'cs-ch3-t2', subjectId: 'cs', front: 'What operation removes the top element from a stack?', back: 'pop() — removes and returns the top element.', difficulty: 'easy', timesCorrect: 3, timesIncorrect: 0 },
+      { id: 'fc4', topicId: 'cs-ch3-t2', subjectId: 'cs', front: 'What is stack underflow?', back: 'An error that occurs when trying to pop from an empty stack.', difficulty: 'medium', timesCorrect: 1, timesIncorrect: 2 },
+      { id: 'fc5', topicId: 'cs-ch3-t2', subjectId: 'cs', front: 'Name 3 real-world applications of stacks.', back: '1. Function call management (call stack)\n2. Undo/Redo in editors\n3. Browser history (back navigation)', difficulty: 'medium', timesCorrect: 0, timesIncorrect: 1 },
+      { id: 'fc6', topicId: 'cs-ch3-t2', subjectId: 'cs', front: 'What is the time complexity of push and pop in a stack?', back: 'O(1) — constant time for both operations.', difficulty: 'hard', timesCorrect: 0, timesIncorrect: 0 },
+    ],
+  },
+  {
+    id: 'deck-math-integration',
+    name: 'Integration — Formulas',
+    subjectId: 'math',
+    topicId: 'math-ch3-t4',
+    masteredCount: 2,
+    learningCount: 4,
+    cards: [
+      { id: 'fc7', topicId: 'math-ch3-t4', subjectId: 'math', front: '∫xⁿ dx = ?', back: 'xⁿ⁺¹/(n+1) + C  (for n ≠ -1)', difficulty: 'easy', timesCorrect: 6, timesIncorrect: 0 },
+      { id: 'fc8', topicId: 'math-ch3-t4', subjectId: 'math', front: '∫sin(x) dx = ?', back: '-cos(x) + C', difficulty: 'easy', timesCorrect: 5, timesIncorrect: 1 },
+      { id: 'fc9', topicId: 'math-ch3-t4', subjectId: 'math', front: '∫cos(x) dx = ?', back: 'sin(x) + C', difficulty: 'easy', timesCorrect: 4, timesIncorrect: 0 },
+      { id: 'fc10', topicId: 'math-ch3-t4', subjectId: 'math', front: '∫eˣ dx = ?', back: 'eˣ + C', difficulty: 'easy', timesCorrect: 3, timesIncorrect: 0 },
+      { id: 'fc11', topicId: 'math-ch3-t4', subjectId: 'math', front: 'What is the Fundamental Theorem of Calculus?', back: '∫ₐᵇ f(x)dx = F(b) - F(a), where F is any antiderivative of f.', difficulty: 'medium', timesCorrect: 1, timesIncorrect: 2 },
+      { id: 'fc12', topicId: 'math-ch3-t4', subjectId: 'math', front: '∫1/x dx = ?', back: 'ln|x| + C', difficulty: 'medium', timesCorrect: 0, timesIncorrect: 1 },
+    ],
+  },
+  {
+    id: 'deck-physics-newton',
+    name: "Newton's Laws",
+    subjectId: 'physics',
+    topicId: 'physics-ch3-t1',
+    masteredCount: 1,
+    learningCount: 3,
+    cards: [
+      { id: 'fc13', topicId: 'physics-ch3-t1', subjectId: 'physics', front: "What is Newton's First Law also called?", back: 'The Law of Inertia — an object at rest stays at rest, and an object in motion stays in motion, unless acted upon by a net force.', difficulty: 'easy', timesCorrect: 4, timesIncorrect: 0 },
+      { id: 'fc14', topicId: 'physics-ch3-t1', subjectId: 'physics', front: 'What is the formula for Newton\'s Second Law?', back: 'F = ma (Force = mass × acceleration)', difficulty: 'easy', timesCorrect: 3, timesIncorrect: 0 },
+      { id: 'fc15', topicId: 'physics-ch3-t1', subjectId: 'physics', front: 'What is the SI unit of force?', back: 'Newton (N) = kg⋅m/s²', difficulty: 'easy', timesCorrect: 2, timesIncorrect: 1 },
+      { id: 'fc16', topicId: 'physics-ch3-t1', subjectId: 'physics', front: "Do action-reaction forces cancel each other?", back: "No — they act on different bodies, so they never cancel each other out.", difficulty: 'hard', timesCorrect: 0, timesIncorrect: 2 },
+    ],
+  },
+];
+
+// ============================================================
+// Streaks & Gamification
+// ============================================================
+export const mockStreak: Streak = {
+  currentStreak: 7,
+  longestStreak: 14,
+  lastStudyDate: new Date().toISOString().split('T')[0],
+  weeklyActivity: [true, true, true, false, true, true, true],
+};
+
+export const mockBadges: Badge[] = [
+  { id: 'b1', name: 'Week Warrior', description: 'Study 7 days in a row', icon: '🔥', earnedAt: '2025-06-15', requirement: 7, progress: 7, category: 'streak' },
+  { id: 'b2', name: 'Quiz Master', description: 'Complete 50 quizzes', icon: '🎯', earnedAt: '2025-06-10', requirement: 50, progress: 50, category: 'practice' },
+  { id: 'b3', name: 'Perfect Score', description: 'Score 100% on any quiz', icon: '⭐', earnedAt: '2025-06-08', requirement: 1, progress: 1, category: 'practice' },
+  { id: 'b4', name: 'Bookworm', description: 'Complete 25 lessons', icon: '📚', progress: 18, requirement: 25, category: 'mastery' },
+  { id: 'b5', name: 'Flashcard Pro', description: 'Master 100 flashcards', icon: '🃏', progress: 42, requirement: 100, category: 'practice' },
+  { id: 'b6', name: 'Early Bird', description: 'Study before 8 AM for 5 days', icon: '🌅', progress: 3, requirement: 5, category: 'special' },
+  { id: 'b7', name: 'Subject Champion', description: 'Reach 90% in any subject', icon: '🏆', progress: 80, requirement: 90, category: 'mastery' },
+  { id: 'b8', name: 'Night Owl', description: 'Study after 10 PM for 3 days', icon: '🦉', earnedAt: '2025-06-12', requirement: 3, progress: 3, category: 'special' },
+];
+
+// ============================================================
+// Topic Mastery
+// ============================================================
+export const mockTopicMastery: TopicMastery[] = [
+  { topicId: 'cs-ch3-t1', topicName: 'Arrays', subjectId: 'cs', subjectName: 'Computer Science', mastery: 92, questionsAttempted: 24, correctAnswers: 22, lastStudied: '2025-06-14', trend: 'stable' },
+  { topicId: 'cs-ch3-t2', topicName: 'Stacks', subjectId: 'cs', subjectName: 'Computer Science', mastery: 78, questionsAttempted: 18, correctAnswers: 14, lastStudied: '2025-06-15', trend: 'up' },
+  { topicId: 'cs-ch3-t3', topicName: 'Queues', subjectId: 'cs', subjectName: 'Computer Science', mastery: 65, questionsAttempted: 15, correctAnswers: 10, lastStudied: '2025-06-13', trend: 'up' },
+  { topicId: 'cs-ch3-t4', topicName: 'Linked Lists', subjectId: 'cs', subjectName: 'Computer Science', mastery: 20, questionsAttempted: 5, correctAnswers: 1, lastStudied: '2025-06-10', trend: 'down' },
+  { topicId: 'math-ch3-t1', topicName: 'Limits', subjectId: 'math', subjectName: 'Mathematics', mastery: 85, questionsAttempted: 20, correctAnswers: 17, lastStudied: '2025-06-12', trend: 'stable' },
+  { topicId: 'math-ch3-t4', topicName: 'Integration', subjectId: 'math', subjectName: 'Mathematics', mastery: 52, questionsAttempted: 22, correctAnswers: 11, lastStudied: '2025-06-14', trend: 'up' },
+  { topicId: 'physics-ch3-t1', topicName: "Newton's First Law", subjectId: 'physics', subjectName: 'Physics', mastery: 88, questionsAttempted: 16, correctAnswers: 14, lastStudied: '2025-06-14', trend: 'stable' },
+  { topicId: 'physics-ch3-t2', topicName: "Newton's Second Law", subjectId: 'physics', subjectName: 'Physics', mastery: 45, questionsAttempted: 18, correctAnswers: 8, lastStudied: '2025-06-15', trend: 'down' },
+];
+
+// ============================================================
+// Brain Games
+// ============================================================
+export const mockBrainGames: BrainGame[] = [
+  { id: 'bg1', name: 'Number Sequence', description: 'Find the pattern in the number sequence', icon: '🔢', category: 'pattern', difficulty: 'easy', highScore: 850, playsToday: 2 },
+  { id: 'bg2', name: 'Memory Match', description: 'Match pairs of related concepts', icon: '🧠', category: 'memory', difficulty: 'medium', highScore: 620, playsToday: 1 },
+  { id: 'bg3', name: 'Logic Grid', description: 'Solve the logic puzzle', icon: '🧩', category: 'logic', difficulty: 'hard', playsToday: 0 },
+  { id: 'bg4', name: 'Quick Math', description: 'Solve equations as fast as you can', icon: '⚡', category: 'math', difficulty: 'easy', highScore: 1200, playsToday: 3 },
+  { id: 'bg5', name: 'Word Scramble', description: 'Unscramble study-related words', icon: '🔤', category: 'logic', difficulty: 'easy', highScore: 450, playsToday: 0 },
+  { id: 'bg6', name: 'Pattern Finder', description: 'Identify the next in the pattern', icon: '🎨', category: 'pattern', difficulty: 'medium', playsToday: 1 },
+];
+
+// ============================================================
+// True/False Questions
+// ============================================================
+export const mockTrueFalseQuestions = [
+  { id: 'tf1', topicId: 'cs-ch3-t2', subjectId: 'cs', statement: 'A stack follows the FIFO principle.', answer: false, explanation: 'A stack follows LIFO (Last In, First Out), not FIFO.' },
+  { id: 'tf2', topicId: 'cs-ch3-t2', subjectId: 'cs', statement: 'The push operation adds an element to the top of a stack.', answer: true, explanation: 'Correct! push() adds to the top of the stack.' },
+  { id: 'tf3', topicId: 'cs-ch3-t2', subjectId: 'cs', statement: 'You can access the middle element of a stack directly.', answer: false, explanation: 'You can only access the top element. To reach middle elements, you must pop elements above them.' },
+  { id: 'tf4', topicId: 'cs-ch3-t2', subjectId: 'cs', statement: 'Browser history uses a stack data structure.', answer: true, explanation: 'Correct! The back button works like popping from a stack of visited pages.' },
+  { id: 'tf5', topicId: 'cs-ch3-t2', subjectId: 'cs', statement: 'The time complexity of stack pop is O(n).', answer: false, explanation: 'Pop is O(1) — constant time, as it only removes the top element.' },
+  { id: 'tf6', topicId: 'math-ch3-t4', subjectId: 'math', statement: 'The integral of eˣ is eˣ + C.', answer: true, explanation: 'Correct! The exponential function is its own antiderivative.' },
+  { id: 'tf7', topicId: 'math-ch3-t4', subjectId: 'math', statement: '∫sin(x) dx = cos(x) + C', answer: false, explanation: '∫sin(x) dx = -cos(x) + C (note the negative sign).' },
+  { id: 'tf8', topicId: 'physics-ch3-t1', subjectId: 'physics', statement: "Newton's First Law is also called the Law of Inertia.", answer: true, explanation: 'Correct! It describes how objects resist changes in their state of motion.' },
+  { id: 'tf9', topicId: 'physics-ch3-t1', subjectId: 'physics', statement: 'Action and reaction forces cancel each other out.', answer: false, explanation: 'They act on different bodies, so they never cancel each other.' },
+  { id: 'tf10', topicId: 'physics-ch3-t1', subjectId: 'physics', statement: 'If net force is zero, the object must be at rest.', answer: false, explanation: 'The object could be at rest OR moving with constant velocity (zero acceleration).' },
+];

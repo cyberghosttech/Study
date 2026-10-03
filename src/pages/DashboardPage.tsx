@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Clock, Target, TrendingUp, BookOpen, Bookmark, Zap } from 'lucide-react';
+import { ArrowRight, Clock, Target, TrendingUp, BookOpen, Bookmark, Zap, Flame, Trophy, Brain, Layers } from 'lucide-react';
 import { useAppState } from '../context/AppContext';
-import { getSubjectById, getChapterById, getTopicById } from '../data/mock-data';
+import { getSubjectById, getChapterById, getTopicById, mockStreak, mockBadges } from '../data/mock-data';
 
 // ============================================================
 // Dashboard Page
@@ -30,6 +30,85 @@ export default function DashboardPage() {
 
       {/* Today's Progress */}
       <TodaysProgress />
+
+      {/* Streak & Quick Actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Streak Card */}
+        <div className="bg-surface rounded-xl border border-border p-5 shadow-sm">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Flame size={20} className="text-warning" />
+              <h3 className="font-semibold text-text-primary">Daily Streak</h3>
+            </div>
+            <span className="text-2xl font-bold text-warning">{mockStreak.currentStreak}</span>
+          </div>
+          <div className="flex items-center gap-1 mb-2">
+            {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, i) => (
+              <div
+                key={i}
+                className={`flex-1 h-8 rounded flex items-center justify-center text-xs font-medium ${
+                  mockStreak.weeklyActivity[i]
+                    ? 'bg-warning-light text-warning'
+                    : 'bg-border-light text-text-muted'
+                }`}
+              >
+                {day}
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-text-muted">Longest streak: {mockStreak.longestStreak} days</p>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="lg:col-span-2 bg-surface rounded-xl border border-border p-5 shadow-sm">
+          <h3 className="font-semibold text-text-primary mb-3">Quick Practice</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <Link to="/flashcards" className="flex flex-col items-center gap-2 p-3 rounded-lg bg-border-light/50 hover:bg-border-light transition-colors">
+              <Layers size={20} className="text-primary" />
+              <span className="text-xs font-medium text-text-primary">Flashcards</span>
+            </Link>
+            <Link to="/true-false" className="flex flex-col items-center gap-2 p-3 rounded-lg bg-border-light/50 hover:bg-border-light transition-colors">
+              <Zap size={20} className="text-warning" />
+              <span className="text-xs font-medium text-text-primary">True/False</span>
+            </Link>
+            <Link to="/brain-games" className="flex flex-col items-center gap-2 p-3 rounded-lg bg-border-light/50 hover:bg-border-light transition-colors">
+              <Brain size={20} className="text-success" />
+              <span className="text-xs font-medium text-text-primary">Brain Games</span>
+            </Link>
+            <Link to="/exam-prep" className="flex flex-col items-center gap-2 p-3 rounded-lg bg-border-light/50 hover:bg-border-light transition-colors">
+              <Target size={20} className="text-danger" />
+              <span className="text-xs font-medium text-text-primary">Exam Prep</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Badges */}
+      <div className="bg-surface rounded-xl border border-border p-5 shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Trophy size={18} className="text-warning" />
+            <h3 className="font-semibold text-text-primary">Badges & Achievements</h3>
+          </div>
+          <Link to="/progress" className="text-sm text-primary font-medium hover:underline">View all</Link>
+        </div>
+        <div className="flex gap-3 overflow-x-auto pb-2">
+          {mockBadges.slice(0, 6).map(badge => (
+            <div
+              key={badge.id}
+              className={`flex flex-col items-center min-w-[80px] p-3 rounded-lg ${
+                badge.earnedAt ? 'bg-warning-light/50' : 'bg-border-light/50 opacity-60'
+              }`}
+            >
+              <span className="text-2xl mb-1">{badge.icon}</span>
+              <span className="text-[10px] font-medium text-text-primary text-center leading-tight">{badge.name}</span>
+              {!badge.earnedAt && (
+                <span className="text-[10px] text-text-muted mt-1">{badge.progress}/{badge.requirement}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Subjects Grid */}
       <div>

@@ -1,6 +1,7 @@
 import React from 'react';
-import { BarChart3, Clock, Target, TrendingUp, BookOpen } from 'lucide-react';
+import { BarChart3, Clock, Target, TrendingUp, BookOpen, Flame, Trophy, Award } from 'lucide-react';
 import { useAppState } from '../context/AppContext';
+import { mockStreak, mockBadges, mockTopicMastery } from '../data/mock-data';
 
 export default function ProgressPage() {
   const { subjects, weakTopics } = useAppState();
@@ -20,6 +21,66 @@ export default function ProgressPage() {
         <StatCard label="Study Time" value="8h 42m" icon={Clock} color="text-success" />
         <StatCard label="Questions" value="428" icon={Target} color="text-warning" />
         <StatCard label="Accuracy" value="82%" icon={TrendingUp} color="text-primary" />
+      </div>
+
+      {/* Streak */}
+      <div className="bg-surface rounded-xl border border-border p-6 shadow-sm mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Flame size={20} className="text-warning" />
+            <h3 className="font-semibold text-text-primary">Study Streak</h3>
+          </div>
+          <span className="text-2xl font-bold text-warning">{mockStreak.currentStreak} days</span>
+        </div>
+        <div className="grid grid-cols-7 gap-2 mb-3">
+          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => (
+            <div
+              key={day}
+              className={`text-center p-2 rounded-lg ${
+                mockStreak.weeklyActivity[i] ? 'bg-warning-light' : 'bg-border-light/50'
+              }`}
+            >
+              <p className={`text-xs font-medium ${mockStreak.weeklyActivity[i] ? 'text-warning' : 'text-text-muted'}`}>{day}</p>
+              <p className={`text-lg font-bold mt-1 ${mockStreak.weeklyActivity[i] ? 'text-warning' : 'text-text-muted'}`}>
+                {mockStreak.weeklyActivity[i] ? '🔥' : '—'}
+              </p>
+            </div>
+          ))}
+        </div>
+        <p className="text-sm text-text-muted">Longest streak: {mockStreak.longestStreak} days</p>
+      </div>
+
+      {/* Badges */}
+      <div className="bg-surface rounded-xl border border-border p-6 shadow-sm mb-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Trophy size={20} className="text-warning" />
+          <h3 className="font-semibold text-text-primary">Badges & Achievements</h3>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {mockBadges.map(badge => (
+            <div
+              key={badge.id}
+              className={`p-4 rounded-lg text-center ${
+                badge.earnedAt ? 'bg-warning-light/50 border border-warning/20' : 'bg-border-light/50 opacity-60'
+              }`}
+            >
+              <span className="text-3xl mb-2 block">{badge.icon}</span>
+              <p className="text-sm font-medium text-text-primary">{badge.name}</p>
+              <p className="text-xs text-text-muted mt-1">{badge.description}</p>
+              {!badge.earnedAt && (
+                <div className="mt-2">
+                  <div className="h-1.5 bg-border rounded-full overflow-hidden">
+                    <div className="h-full bg-warning rounded-full" style={{ width: `${(badge.progress / badge.requirement) * 100}%` }} />
+                  </div>
+                  <p className="text-xs text-text-muted mt-1">{badge.progress}/{badge.requirement}</p>
+                </div>
+              )}
+              {badge.earnedAt && (
+                <p className="text-xs text-success mt-2 font-medium">✓ Earned</p>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Overall Progress Bar */}
@@ -73,15 +134,39 @@ export default function ProgressPage() {
         </div>
 
         <div className="bg-surface rounded-xl border border-border p-6 shadow-sm">
-          <h3 className="font-semibold text-text-primary mb-4">Topics Needing Attention</h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-text-primary">Knowledge Gaps</h3>
+            <a href="#/mastery" className="text-sm text-primary font-medium hover:underline">View all</a>
+          </div>
           <div className="space-y-3">
-            {weakTopics.slice(0, 4).map(topic => (
-              <div key={topic.topicId} className="flex items-center justify-between p-3 rounded-lg bg-danger-light/50">
-                <div>
-                  <p className="text-sm font-medium text-text-primary">{topic.topicName}</p>
+            {mockTopicMastery.filter(m => m.mastery < 60).slice(0, 4).map(topic => (
+              <div key={topic.topicId} className="flex items-center gap-3 p-3 rounded-lg bg-danger-light/30">
+                <div className="relative w-10 h-10 shrink-0">
+                  <svg className="w-10 h-10 -rotate-90" viewBox="0 0 40 40">
+                    <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" strokeWidth="3" className="text-border" />
+                    <circle
+                      cx="20" cy="20" r="16" fill="none"
+                      stroke="currentColor" strokeWidth="3"
+                      strokeDasharray={`${(topic.mastery / 100) * 100.5} 100.5`}
+                      strokeLinecap="round"
+                      className="text-danger"
+                    />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-danger">
+                    {topic.mastery}%
+                  </span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-text-primary truncate">{topic.topicName}</p>
                   <p className="text-xs text-text-muted">{topic.subjectName}</p>
                 </div>
-                <span className="text-sm font-medium text-danger">{topic.score}%</span>
+                <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                  topic.trend === 'down' ? 'bg-danger-light text-danger' :
+                  topic.trend === 'up' ? 'bg-success-light text-success' :
+                  'bg-border-light text-text-muted'
+                }`}>
+                  {topic.trend === 'down' ? '↓ Declining' : topic.trend === 'up' ? '↑ Improving' : '→ Stable'}
+                </span>
               </div>
             ))}
           </div>
