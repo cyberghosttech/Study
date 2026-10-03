@@ -273,6 +273,39 @@ export interface BrainGame {
   playsToday: number;
 }
 
+// User-Created Subjects
+export interface UserSubject {
+  id: string;
+  name: string;
+  icon: string; // emoji
+  color: string; // hex color
+  description?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Study Documents
+export type DocumentType = 'pdf' | 'notes' | 'book' | 'link' | 'image' | 'audio' | 'video';
+
+export interface StudyDocument {
+  id: string;
+  subjectId: string;
+  name: string;
+  type: DocumentType;
+  description?: string;
+  // For file uploads (base64 for localStorage)
+  fileData?: string;
+  fileSize?: number;
+  mimeType?: string;
+  // For links
+  url?: string;
+  // For notes (text content)
+  content?: string;
+  createdAt: string;
+  updatedAt: string;
+  tags?: string[];
+}
+
 // Navigation
 export interface NavItem {
   label: string;

@@ -10,6 +10,9 @@ StudyOS is a modern, scalable study platform designed to help students **Learn �
 - **Smart Text** — AI-generated topic summaries
 - **Scan & Solve** — Photo-based problem solving (UI ready)
 - **Bookmarks** for important lessons
+- **Custom Subjects** — Create your own subjects with custom icons and colors
+- **Document Management** — Upload PDFs, notes, books, images, audio, video, and links to each subject
+- **Document Viewer** — View PDFs, images, notes, and play audio/video directly in the app
 
 ### Practice & Testing
 - **MCQs** with instant feedback and explanations
@@ -72,16 +75,24 @@ src/
 ├── context/
 │   └── AppContext.tsx         # Global state management
 ├── components/
-│   └── layout/
-│       └── AppShell.tsx       # Sidebar, header, mobile nav
+│   ├── layout/
+│   │   └── AppShell.tsx       # Sidebar, header, mobile nav
+│   └── modals/
+│       ├── AddSubjectModal.tsx    # Create custom subjects
+│       └── AddDocumentModal.tsx   # Upload documents to subjects
 └── pages/
     ├── DashboardPage.tsx      # Main dashboard
-    ├── SubjectsPage.tsx       # Subject listing
-    ├── SubjectDetailPage.tsx  # Chapter listing per subject
+    ├── SubjectsPage.tsx       # Subject listing + add subject
+    ├── SubjectDetailPage.tsx  # Chapters (mock) or Documents (custom)
     ├── StudyPage.tsx          # Lesson viewer
     ├── PracticePage.tsx       # Practice/MCQ interface
+    ├── FlashcardsPage.tsx     # Flashcard study mode
+    ├── TrueFalsePage.tsx      # True/False challenges
+    ├── BrainGamesPage.tsx     # Brain training games
     ├── ExamsPage.tsx          # Mock examination
-    ├── ProgressPage.tsx       # Analytics dashboard
+    ├── ExamPrepPage.tsx       # Exam prep with auto study plan
+    ├── MasteryPage.tsx        # Topic mastery tracking
+    ├── ProgressPage.tsx       # Analytics + badges + streaks
     ├── PlannerPage.tsx        # Study planner
     ├── AITutorPage.tsx        # AI tutor chat
     ├── SettingsPage.tsx       # User settings
@@ -94,8 +105,8 @@ src/
 |------|-------------|
 | `/` | Redirects to `/dashboard` |
 | `/dashboard` | Main dashboard with streaks, badges, quick actions |
-| `/subjects` | All subjects listing |
-| `/subjects/:subject` | Subject detail with chapters |
+| `/subjects` | All subjects listing (mock + user-created) with add subject |
+| `/subjects/:subject` | Subject detail: chapters (mock) or documents (custom) |
 | `/study/:subject/:chapter/:topic` | Lesson viewer |
 | `/flashcards` | Flashcard decks with flip cards |
 | `/practice` | Practice modes (MCQs, short, long, mixed) |
@@ -108,6 +119,10 @@ src/
 | `/planner` | Study planner |
 | `/ai-tutor` | AI tutor with scan & voice input |
 | `/settings` | User settings |
+
+### Subject Detail Behavior
+- **Mock subjects** (Computer Science, Mathematics, etc.): Show chapters and lessons
+- **User-created subjects**: Show documents and resources with upload capability
 
 ## Development
 
@@ -140,6 +155,27 @@ Mock data is centralized in `src/data/mock-data.ts` with helper functions. This 
 - `progress` → Progress
 - `bookmarks` → Bookmark
 - `study_plans` → StudyPlan
+- `user_subjects` → UserSubject (user-created subjects)
+- `study_documents` → StudyDocument (uploaded documents)
+
+### User-Created Content
+Users can create custom subjects and upload documents:
+- **Custom Subjects**: Created via modal with name, emoji icon, color, and description
+- **Documents**: Supports PDF, notes (text), books, links, images, audio, and video
+- **File Storage**: Files are stored as base64 in localStorage (demo mode)
+- **Persistence**: User-created content persists across sessions via localStorage
+- **Future**: Will migrate to Supabase Storage for file uploads
+
+### Document Types
+| Type | Description | Storage |
+|------|-------------|---------|
+| PDF | PDF documents | File upload (base64) |
+| Notes | Text-based notes | Text content |
+| Book | Books/textbooks | File upload (base64) |
+| Link | External URLs | URL string |
+| Image | Image files | File upload (base64) |
+| Audio | Audio files | File upload (base64) |
+| Video | Video files | File upload (base64) |
 
 ### AI Provider Abstraction
 The AI layer uses a provider interface (`src/lib/ai-provider.ts`) that can be swapped between mock and real providers (OpenAI, Anthropic, etc.) without changing the UI.
